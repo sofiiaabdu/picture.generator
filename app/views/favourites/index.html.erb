@@ -1,11 +1,11 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Favourites</h1>
+<h1>Favourite Pictures</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Url</th>
+      <th>Picture</th>
       <th>Description</th>
       <th colspan="3"></th>
     </tr>
@@ -14,11 +14,11 @@
   <tbody>
     <% @favourites.each do |favourite| %>
       <tr>
-        <td><%= favourite.url %></td>
+        <td><%= image_tag favourite[:url], height: 200, width: 250 %></td>
         <td><%= favourite.description %></td>
         <td><%= link_to 'Show', favourite %></td>
         <td><%= link_to 'Edit', edit_favourite_path(favourite) %></td>
-        <td><%= link_to 'Destroy', favourite, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Delete', favourite, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

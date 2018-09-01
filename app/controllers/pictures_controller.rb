@@ -7,10 +7,18 @@ class PicturesController < ApplicationController
   # GET /pictures
   # GET /pictures.json
   def index
-    @picture_url = 'https://hlfppt.org/wp-content/uploads/2017/04/placeholder.png'
-    # @picture_url = Faker::Avatar.image
+    url = Faker::LoremFlickr.image
+    uri = URI.parse(url)
 
-    uri = URI(@picture_url)
-    @pictures = Net::HTTP.get_response(uri)
+    url_faker = url.slice('http://loremflickr.com')
+
+    response = Net::HTTP.get_response(uri)
+
+    if response.code == '301'
+      response = Net::HTTP.get_response(URI.parse(response.header['location']))
+      url = response.header['location']
+    end
+
+    @url = url_faker + URI.parse(url).to_s
   end
 end

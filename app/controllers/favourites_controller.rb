@@ -1,3 +1,6 @@
+require 'net/http'
+require 'json'
+
 class FavouritesController < ApplicationController
   before_action :set_favourite, only: [:show, :edit, :update, :destroy]
 
@@ -24,7 +27,21 @@ class FavouritesController < ApplicationController
   # POST /favourites
   # POST /favourites.json
   def create
-    @favourite = Favourite.new(favourite_params)
+
+    url = Faker::LoremFlickr.image
+    uri = URI.parse(url)
+
+    url_faker = url.slice('http://loremflickr.com')
+
+    response = Net::HTTP.get_response(uri)
+
+    if response.code == '301'
+      response = Net::HTTP.get_response(URI.parse(response.header['location']))
+      url = response.header['location']
+    end
+
+    url = url_faker + URI.parse(url).to_s
+    @favourite = Favourite.new(url: url, description: ' ')
 
     respond_to do |format|
       if @favourite.save
@@ -65,10 +82,5 @@ class FavouritesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_favourite
       @favourite = Favourite.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def favourite_params
-      params.require(:favourite).permit(:url, :description)
     end
 end

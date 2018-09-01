@@ -2,12 +2,14 @@
 
 <p>
   <strong>Url:</strong>
-  <%= @favourite.url %>
+  <%= image_tag @favourite.url %>
 </p>
+
+<br>
 
 <p>
   <strong>Description:</strong>
-  <%= @favourite.description %>
+  <%=  @favourite.description %>
 </p>
 
 <%= link_to 'Edit', edit_favourite_path(@favourite) %> |
