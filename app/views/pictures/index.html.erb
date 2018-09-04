@@ -2,7 +2,14 @@
 
 <h1>Random Picture</h1>
 
-<%= image_tag @url, height: '250', width: '350'%>
-
-<br>
-<%= link_to 'All Favourites', favourites_url %>
+<h3>All pictures: </h3>
+<table>
+  <tbody>
+  <% @pictures.each do |img| %>
+    <tr>
+      <td><%= image_tag img.url, height: '250', width: '350', class: 'img-responsive' %></td>
+      <td><%= link_to 'Destroy', picture_path, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

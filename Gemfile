@@ -62,3 +62,13 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'faker'
+
+gem 'haml'
+
+gem 'haml-rails', '~> 1.0'
+
+gem 'autoprefixer-rails'
+
+gem 'bootstrap-sass', '3.2.0.2'
+
+gem 'jquery-rails'

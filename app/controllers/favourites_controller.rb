@@ -41,7 +41,7 @@ class FavouritesController < ApplicationController
     end
 
     url = url_faker + URI.parse(url).to_s
-    @favourite = Favourite.new(url: url, description: ' ')
+    @favourite = Favourite.new(url: url)
 
     respond_to do |format|
       if @favourite.save
