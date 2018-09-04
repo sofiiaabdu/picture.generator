@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>PictureApp</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
-
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-</head>
-<body>
 <p>
   <strong>Name:</strong>
   <%= @user.name %>
 </p>
 
 <br>
+
+<%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %> |
+<%= link_to 'Back', users_path, class: 'btn btn-success' %>
 
 <h3>Random picture: </h3>
 <div class="row">
@@ -27,12 +19,13 @@
 
 <h3>All pictures: </h3>
 <br>
+
   <div class="container">
     <div class="row">
     <% @pictures.each do |img| %>
         <div class="col-xs-6 col-md-4">
       <%= image_tag img.url, height: '250', width: '350', class: 'img-thumbnail ' %>
-      <%= link_to 'Destroy', picture_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-success' %>
+      <%= link_to 'Destroy', user_picture_path(params[:id], img.id),  method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-success' %>
       </div>
     <% end %>
 
@@ -41,8 +34,3 @@
 <br>
 <br>
 
-<%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %> |
-<%= link_to 'Back', users_path, class: 'btn btn-success' %>
-
-</body>
-</html>

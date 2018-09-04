@@ -7,11 +7,8 @@
       %ul
         - picture.errors.full_messages.each do |message|
           %li= message
-  .field
+  .form-group
     = form.label :url
     = form.text_area :url
-  .field
-    = form.label :description
-    = form.text_field :description
   .actions
     = form.submit

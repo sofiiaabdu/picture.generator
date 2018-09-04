@@ -8,12 +8,16 @@ class PicturesController < ApplicationController
   # GET /pictures.json
   def index
     user = User.find(params[:user_id])
+    @pictures = user.pictures.all
+  end
+
+  def show
   end
 
   def destroy
     @picture.destroy
     respond_to do |format|
-      format.html { redirect_to user_path, notice: 'Picture was successfully destroyed.' }
+      format.html { redirect_to user_url(params[:user_id]), notice: 'Picture was successfully destroyed.' }
     end
   end
 

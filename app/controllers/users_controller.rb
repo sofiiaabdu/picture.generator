@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     pic = Picture.new(url: @url, user_id: params[:id])
     pic.save
 
-    @pictures = Picture.where(user_id: params[:id])
+    @pictures = Picture.all.find_all_pictures_by_user_id(params[:id])
   end
 
   # GET /users/new

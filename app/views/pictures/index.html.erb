@@ -8,7 +8,7 @@
   <% @pictures.each do |img| %>
     <tr>
       <td><%= image_tag img.url, height: '250', width: '350', class: 'img-responsive' %></td>
-      <td><%= link_to 'Destroy', picture_path, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <td><%= link_to 'Destroy', user_picture_path(img.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
   <% end %>
   </tbody>
