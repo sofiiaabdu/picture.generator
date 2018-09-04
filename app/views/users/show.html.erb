@@ -4,14 +4,13 @@
 </p>
 
 <br>
-
 <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %> |
 <%= link_to 'Back', users_path, class: 'btn btn-success' %>
 
-<h3>Random picture: </h3>
-<div class="row">
-  <div class="col-md-12 d-flex justify-content-center mb-5">
-    <%= image_tag @url, height: '250', width: '350' %>
+<h3>Added picture: </h3>
+<div class="row align-items-center" >
+  <div class="col-md-12 d-flex justify-content-center mb-10px">
+    <%= image_tag @url, height: '250', width: '300' %>
   </div>
 </div>
 
@@ -23,10 +22,17 @@
   <div class="container">
     <div class="row">
     <% @pictures.each do |img| %>
-        <div class="col-xs-6 col-md-4">
-      <%= image_tag img.url, height: '250', width: '350', class: 'img-thumbnail ' %>
-      <%= link_to 'Destroy', user_picture_path(params[:id], img.id),  method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-success' %>
-      </div>
+        <div class="card border-danger my-5" >
+        <div class="col-xs-5 col-md-3">
+      <%= image_tag img.url, class: 'img-thumbnail card-img-top' %>
+          <div class="card text-center">
+          <div class="card-body">
+      <%= link_to 'Destroy', user_picture_path(params[:id], img.id),
+                  method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
+          </div>
+          </div>
+          </div>
+        </div>
     <% end %>
 
 </div>
