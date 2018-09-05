@@ -1,0 +1,8 @@
+%p#notice= notice
+%p
+  %strong Url:
+  = image_tag @favourite.url
+%br/
+= link_to 'Edit', edit_favourite_path(@favourite)
+|
+= link_to 'Back', favourites_path

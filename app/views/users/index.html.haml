@@ -1,0 +1,26 @@
+!!!
+%html
+  %body
+    %p#notice= notice
+    %h1 Users
+    %table
+      %thead
+        %tr
+          %th Name
+          %th{:colspan => "3"}
+      %tbody
+        - @users.each do |user|
+          %tr
+            %td= user.name
+            %td= link_to 'Show', user
+            %td= link_to 'Edit', edit_user_path(user)
+            %td= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }
+    %br/
+    = link_to 'New User', new_user_path
+    / Required meta tags
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}/
+    / Bootstrap CSS
+    %link{:crossorigin => "anonymous", :href => "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css", :integrity => "sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO", :rel => "stylesheet"}/
+    %title Hello, world!
+    %h1 Hello, world!

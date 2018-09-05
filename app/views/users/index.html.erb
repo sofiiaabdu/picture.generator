@@ -1,0 +1,22 @@
+
+<div class="container">
+  <table class="table table-bordered table-hover table-responsive">
+    <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td class='text-center'><%= user.name %></td>
+        <td><%= link_to 'Show', user, class: 'btn btn-info' %></td>
+        <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-success' %></td>
+        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<br>
+
+<%= link_to new_user_path, class: 'btn btn-link' do %>
+  <i class="glyphicon glyphicon-plus"></i> New User
+<% end %>
+

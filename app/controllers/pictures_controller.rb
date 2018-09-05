@@ -1,5 +1,5 @@
-require 'net/http'
 require 'json'
+require 'net/http'
 
 class PicturesController < ApplicationController
   before_action :set_picture, only: [:show, :edit, :update, :destroy]
@@ -7,18 +7,23 @@ class PicturesController < ApplicationController
   # GET /pictures
   # GET /pictures.json
   def index
-    url = Faker::LoremFlickr.image
-    uri = URI.parse(url)
+    user = User.find(params[:user_id])
+    @pictures = user.pictures.all
+  end
 
-    url_faker = url.slice('http://loremflickr.com')
+  def show
+  end
 
-    response = Net::HTTP.get_response(uri)
-
-    if response.code == '301'
-      response = Net::HTTP.get_response(URI.parse(response.header['location']))
-      url = response.header['location']
+  def destroy
+    @picture.destroy
+    respond_to do |format|
+      format.html { redirect_to user_url(params[:user_id]), notice: 'Picture was successfully destroyed.' }
     end
+  end
 
-    @url = url_faker + URI.parse(url).to_s
+
+  ### ????????????????
+  def set_picture
+    @picture = Picture.find(params[:id])
   end
 end

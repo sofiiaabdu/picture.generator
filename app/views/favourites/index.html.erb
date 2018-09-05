@@ -15,7 +15,6 @@
     <% @favourites.each do |favourite| %>
       <tr>
         <td><%= image_tag favourite[:url], height: 200, width: 250 %></td>
-        <td><%= favourite.description %></td>
         <td><%= link_to 'Show', favourite %></td>
         <td><%= link_to 'Edit', edit_favourite_path(favourite) %></td>
         <td><%= link_to 'Delete', favourite, method: :delete, data: { confirm: 'Are you sure?' } %></td>
