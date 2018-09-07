@@ -1,5 +1,9 @@
 class User < ApplicationRecord
   has_many :pictures
+  has_one :address
+
+  accepts_nested_attributes_for(:address, update_only: true, allow_destroy: true)
+                                            #reject_if: lambda { |attrs| attrs['zip', 'city', 'street', 'house_member'].blank? }
 
   enum sex: { male: 0, female: 1, other: 2 }
 
