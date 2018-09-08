@@ -35,6 +35,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @user.address = Address.new
   end
 
   # GET /users/1/edit
@@ -74,6 +75,7 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    @user.address.destroy
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
@@ -89,6 +91,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name)
+      params.require(:user).permit(:first_name, :last_name, :sex, :age, :about,
+                                   address_attributes: [:zip, :city, :street, :house_member])
     end
 end

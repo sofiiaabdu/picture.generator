@@ -11,12 +11,44 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <div class="input-group">
-    <%= form.label :name %>
-    <%= form.text_field :name, class:"form-control" %>
+  <div class="form-group col-md-5">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name, class: 'form-control', placeholder: 'First name' %>
   </div>
-  <div class= 'btn btn-link'>
+  <div class="form-group col-md-5">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name, class: 'form-control', placeholder: 'Last name' %>
+  </div>
+  <div class="form-group col-md-4">
+    <%= form.label :sex %>
+    <%= form.select :sex, User.sexes.keys.map {|key| [t("sex.#{key}"), key]}, class: 'mdb-select colorful-select dropdown-primary'%>
+  </div>
+  <div class="form-group col-md-3">
+    <%= form.label :age %>
+    <%= form.text_field :age, class: 'form-control', placeholder: 'Age' %>
+  </div>
+  <div class="form-group col-md-6">
+    <%= form.label :about %>
+    <%= form.text_area :about, class: 'form-control', placeholder: 'About...' %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= form.label :address %>
+    <%= form.fields_for :address, @user.address do |address| %>
+      <%= address.text_field :zip, class: 'form-control', placeholder: 'Zip' %>
+      <br>
+      <%= form.label :city %>
+      <%= address.text_field :city, class: 'form-control', placeholder: 'City' %>
+      <br>
+      <%= form.label :street %>
+      <%= address.text_field :street, class: 'form-control', placeholder: 'Street' %>
+      <br>
+      <%= form.label :house_member %>
+      <%= address.text_field :house_member, class: 'form-control', placeholder: 'Building' %>
+  <% end %>
+  </div>
+
+  <div class= 'btn btn-link '>
     <%= form.submit%>
   </div></div>
 <% end %>
