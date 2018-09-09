@@ -13,29 +13,16 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    url = Faker::LoremFlickr.image
-    uri = URI.parse(url)
+    random_picture_generator
 
-    url_faker = url.slice('http://loremflickr.com')
-
-    response = Net::HTTP.get_response(uri)
-
-    if response.code == '301'
-      response = Net::HTTP.get_response(URI.parse(response.header['location']))
-      url = response.header['location']
-    end
-
-    @url = url_faker + URI.parse(url).to_s
-    pic = Picture.new(url: @url, user_id: params[:id])
-    pic.save
-
-    @pictures = Picture.all.find_all_pictures_by_user_id(params[:id])
+    @pictures = Picture.pictures_by_user(params[:id])
   end
 
   # GET /users/new
   def new
     @user = User.new
     @user.address = Address.new
+    @picture = Picture.new
   end
 
   # GET /users/1/edit
@@ -49,7 +36,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to @user, notice: 'Thanks for joining us! :)' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -78,12 +65,34 @@ class UsersController < ApplicationController
     @user.address.destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to users_url, notice: 'Aww.. we are sad you\'ve left us' }
       format.json { head :no_content }
     end
   end
 
-  private
+  def random_picture_url
+    url = Faker::LoremFlickr.image
+    uri = URI.parse(url)
+    url_faker = url.slice('http://loremflickr.com')
+
+    response = Net::HTTP.get_response(uri)
+
+    if response.code == '301'
+      response = Net::HTTP.get_response(URI.parse(response.header['location']))
+      url = response.header['location']
+    end
+
+    url_faker + URI.parse(url).to_s
+  end
+
+  def random_picture_generator
+    @url = random_picture_url
+
+    picture = Picture.new(url: @url, user_id: params[:id])
+    picture.save
+  end
+
+    private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])

@@ -2,85 +2,55 @@ require 'net/http'
 require 'json'
 
 class FavouritesController < ApplicationController
-  before_action :set_favourite, only: [:show, :edit, :update, :destroy]
+  before_action :set_favourite, only: [:show, :destroy]
+  before_action :set_user
 
   # GET /favourites
   # GET /favourites.json
   def index
-    @favourites = Favourite.all
-  end
-
-  # GET /favourites/1
-  # GET /favourites/1.json
-  def show
+    @favourites = @user.favourites
   end
 
   # GET /favourites/new
   def new
-    @favourite = Favourite.new
-  end
-
-  # GET /favourites/1/edit
-  def edit
+    @favourite = @user.favourites.build
   end
 
   # POST /favourites
   # POST /favourites.json
   def create
-
-    url = Faker::LoremFlickr.image
-    uri = URI.parse(url)
-
-    url_faker = url.slice('http://loremflickr.com')
-
-    response = Net::HTTP.get_response(uri)
-
-    if response.code == '301'
-      response = Net::HTTP.get_response(URI.parse(response.header['location']))
-      url = response.header['location']
-    end
-
-    url = url_faker + URI.parse(url).to_s
-    @favourite = Favourite.new(url: url)
+    @favourite = @user.favourites.new(
+                                      user_id: params[:user_id],
+                                      picture_id: params[:picture_id]
+                                      )
 
     respond_to do |format|
       if @favourite.save
-        format.html { redirect_to @favourite, notice: 'Favourite was successfully created.' }
-        format.json { render :show, status: :created, location: @favourite }
+        format.html { redirect_to user_favourites_path }
       else
-        format.html { render :new }
-        format.json { render json: @favourite.errors, status: :unprocessable_entity }
+        format.html { redirect_to user_path(params[:user_id]) }
+        puts @favourite.errors.full_messages
       end
     end
-  end
 
-  # PATCH/PUT /favourites/1
-  # PATCH/PUT /favourites/1.json
-  def update
-    respond_to do |format|
-      if @favourite.update(favourite_params)
-        format.html { redirect_to @favourite, notice: 'Favourite was successfully updated.' }
-        format.json { render :show, status: :ok, location: @favourite }
-      else
-        format.html { render :edit }
-        format.json { render json: @favourite.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # DELETE /favourites/1
   # DELETE /favourites/1.json
   def destroy
+    @favorite = @user.favourites.find(params[:id])
     @favourite.destroy
     respond_to do |format|
-      format.html { redirect_to favourites_url, notice: 'Favourite was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html { redirect_to user_favourite_path, notice: 'Favourite was successfully destroyed.' }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_favourite
-      @favourite = Favourite.find(params[:id])
+    def set_user
+      @user = User.find(params[:user_id])
     end
+
+  def set_favourite
+    @favourite = Favourite.find(params[:id])
+  end
 end

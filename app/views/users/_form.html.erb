@@ -35,6 +35,8 @@
   <div class="form-group col-md-4">
     <%= form.label :address %>
     <%= form.fields_for :address, @user.address do |address| %>
+
+      <%= form.label :zip %>
       <%= address.text_field :zip, class: 'form-control', placeholder: 'Zip' %>
       <br>
       <%= form.label :city %>

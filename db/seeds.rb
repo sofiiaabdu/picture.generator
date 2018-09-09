@@ -1,8 +1,5 @@
 require 'securerandom'
 
-Favourite.create!(
-  url: 'http://placehold.it/300x150'
-)
 
 30.times do
   user = User.create!(
@@ -28,5 +25,10 @@ end
     user_id: 1
   )
 end
+
+Favourite.create!(
+    picture_id: 1,
+    user_id: 1
+)
 
 

@@ -1,28 +1,24 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Favourite Pictures</h1>
+<h3 class="text-center">Favourite Pictures</h3>
 
-<table>
-  <thead>
-    <tr>
-      <th>Picture</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @favourites.each do |favourite| %>
-      <tr>
-        <td><%= image_tag favourite[:url], height: 200, width: 250 %></td>
-        <td><%= link_to 'Show', favourite %></td>
-        <td><%= link_to 'Edit', edit_favourite_path(favourite) %></td>
-        <td><%= link_to 'Delete', favourite, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<br>
+<%= link_to 'Back', user_path(params[:user_id]), class: 'btn btn-success' %>
 
 <br>
 
-<%= link_to 'New Favourite', new_favourite_path %>
+<div class="container">
+  <div class="row">
+    <% @favourites.each do |favourite| %>
+      <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 mb-0">
+        <div class="card border-secondary my-2 mx-1" >
+          <%= image_tag Picture.find(favourite.picture_id).url, class: 'card-img-top' %>
+          <div class="card-body text-center">
+            <%= link_to 'Destroy', user_favourites_path, method: :delete, data: { confirm: 'Are you sure?' } %>
+           </div>
+          <br> <br>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

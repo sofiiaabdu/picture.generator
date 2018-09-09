@@ -2,10 +2,9 @@
 
 <p>
   <strong>Url:</strong>
-  <%= image_tag @favourite.url %>
+  <%= image_tag @favourite.id %>
 </p>
 
 <br>
 
-<%= link_to 'Edit', edit_favourite_path(@favourite) %> |
-<%= link_to 'Back', favourites_path %>
+<%= link_to 'Back', user_path %>

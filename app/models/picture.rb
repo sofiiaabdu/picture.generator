@@ -1,7 +1,6 @@
 class Picture < ApplicationRecord
   belongs_to :user
+  has_many :favourites, dependent: :destroy
 
-  def self.find_all_pictures_by_user_id(id)
-    where(user_id: id)
-  end
+  scope :pictures_by_user, -> (id) { where(user_id: id) }
 end

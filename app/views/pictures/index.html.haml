@@ -1,9 +1,0 @@
-%p#notice= notice
-%h1 Random Picture
-%h3 All pictures:
-%table
-  %tbody
-    - @pictures.each do |img|
-      %tr
-        %td= image_tag img.url, height: '250', width: '350'
-        %td= link_to 'Destroy', picture_path, method: :delete, data: { confirm: 'Are you sure?' }

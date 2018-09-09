@@ -1,19 +1,15 @@
-<%= form_with(model: favourite, local: true) do |form| %>
-  <% if favourite.errors.any? %>
+<%= form_with(url: user_favourites_path, local: true) do |form| %>
+  <% if @favourite.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(favourite.errors.count, "error") %> prohibited this favourite from being saved:</h2>
+      <h2><%= pluralize(@favourite.errors.count, "error") %> prohibited this favourite from being saved:</h2>
 
       <ul>
-      <% favourite.errors.full_messages.each do |message| %>
+      <% @favourite.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-
-  </div>
 
   <div class="actions">
     <%= form.submit %>

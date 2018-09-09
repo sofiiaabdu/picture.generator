@@ -6,7 +6,8 @@
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %> |
-<%= link_to 'Back', users_path, class: 'btn btn-success' %>
+<%= link_to 'Back', users_path, class: 'btn btn-success' %> |
+<%= link_to 'Favourites', user_favourites_path(params[:id]), class: 'btn btn-success' %>
 
 <br>
 <br>
@@ -30,11 +31,11 @@
           <div class="card-body text-center">
       <%= link_to 'Destroy', user_picture_path(params[:id], img.id),
                   method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
+      <%= link_to 'Favourite', user_favourites_path(:user_id => params[:id], :picture_id => img.id), :method => :post %>
           </div>
           <br> <br>
           </div>
         </div>
-
     <% end %>
   </div>
 </div>

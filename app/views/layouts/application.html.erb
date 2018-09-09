@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PictureApp</title>
+    <title>Picture Generator</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -10,26 +10,11 @@
   </head>
 
   <body>
-  <nav class="navbar sticky-top  navbar-light" style="background-color: #d9ffb3;" >
-    <span class="navbar-brand mb-0 h1">
-     <img src="https://i.pinimg.com/originals/72/a4/13/72a41303ac51df6706113a0c4088c6f2.png"
-          width="90" height="50" class="d-inline-block align-top" >
-    </span>
-    <div class="nav-item dropdown navbar-brand mb-0 h1">
-    <a class="nav-link dropdown-toggle text-monospace" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Cats Club
-    </a>
-      <ul class="dropdown-menu text-center">
-        <li><%= link_to "All Users", users_path %></li>
-        <li class="divider"></li>
-        <li>
-          <%= link_to "New User", new_user_path %>
-        </li>
-      </ul>
-    </div>
-    </nav>
+
+  <%= render 'shared/nav' %>
   <br>
 
-        <%= yield %>
+  <%= yield %>
+
   </body>
 </html>
