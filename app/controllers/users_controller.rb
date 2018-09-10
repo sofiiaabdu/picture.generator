@@ -2,7 +2,11 @@ require 'net/http'
 require 'json'
 
 class UsersController < ApplicationController
+  include UsersHelper
+
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_admin, only: :index
+  before_action :user_access, only: :show
 
   # GET /users
   # GET /users.json
@@ -92,15 +96,17 @@ class UsersController < ApplicationController
     picture.save
   end
 
+=begin
+  def statistics
+    users = User.all
+    @female = users.female
+
+  end
+=end
+
     private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-=begin
-      if params[:id] = 'sign_out'
-        sign_out current_user
-        redirect_to '/pictures'
-      else
-=end
         @user = User.find(params[:id])
     end
 
@@ -109,4 +115,18 @@ class UsersController < ApplicationController
       params.require(:user).permit(:first_name, :last_name, :sex, :age, :about,
                                    address_attributes: [:zip, :city, :street, :house_member])
     end
-end
+
+    def authorize_admin
+      return if current_user.try(:admin?)
+      redirect_to root_path, notice: 'Access denied!'
+    end
+
+    def user_access
+      unless current_user.try(:admin?)
+        unless params[:id].to_i == current_user.id
+          # unless @user == current_user && current_user.admin?
+          redirect_to pictures_path
+        end
+      end
+    end
+  end

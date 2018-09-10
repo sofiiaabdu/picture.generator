@@ -20,4 +20,7 @@ class User < ApplicationRecord
   validates :age, numericality: { only_integer: true, greater_than: 0, less_than: 120,
                                   message: "%{value} seems wrong, it must be less than 120" }
 
+  scope :female, -> { where(sex: 1) }
+  scope :male, -> { where(sex: 0)}
+  scope :other, -> { where(sex: 2)}
 end

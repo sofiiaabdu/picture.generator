@@ -6,6 +6,31 @@
 <br>
 <br>
 
+<% if current_user.try(:admin?) %>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Users</th>
+    <th scope="col">Male</th>
+    <th scope="col">Female</th>
+    <th scope="col">Average Age</th>
+    <th scope="col">Min Age</th>
+    <th scope="col">Max Age</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><%= count.to_s %></td>
+    <td><%= male_users.to_s %></td>
+    <td><%= female_users.to_s %></td>
+    <td><%= average.round(2)  %></td>
+    <td><%= minimum.to_s %></td>
+    <td><%= maximum.to_s %></td>
+  </tr>
+  </tbody>
+</table>
+<% end %>
+
 <div class="container">
   <div class="row">
   <% @users.each do |user| %>
