@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <%= form_tag users_path, :method => :get do %>
+        <div>
+          <%= label_tag "First name" %>
+        </div>
+        <div>
+          <%= select_tag(:first, options_for_select([ "asc", "desc" ])) %>
+        </div>
+        <div>
+          <%= submit_tag "Save", :name => 'save' %>
+        </div>
+      <% end %>
+        </div>
+    <div class="col">
+      <%= form_tag users_path, :method => :get do %>
+        <div>
+          <%= label_tag "City" %>
+        </div>
+        <div>
+          <%= select_tag(:city, options_for_select([ "asc", "desc" ], "desc")) %>
+        </div>
+        <div>
+          <%= submit_tag "Save", :name => 'save' %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col">
+      <div class="card float-right" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Users: <%= count.to_s %></li>
+          <li class="list-group-item">Male: <%= male_users.to_s %></li>
+          <li class="list-group-item">Female: <%= female_users.to_s %></li>
+          <li class="list-group-item">Average age: <%= average.round(2) %></li>
+          <li class="list-group-item">Min age: <%= minimum.to_s %></li>
+          <li class="list-group-item">Max age: <%= maximum.to_s %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -4,6 +4,7 @@ require 'json'
 class FavouritesController < ApplicationController
   before_action :set_favourite, only: [:show, :destroy]
   before_action :set_user
+  before_action :favourite_access
 
   include UserAccess
 
@@ -59,5 +60,10 @@ class FavouritesController < ApplicationController
 
   def user_id
     params[:user_id]
+  end
+
+  def favourite_access
+    return if current_user
+    redirect_to user_pictures_path, notice: 'Access denied!'
   end
 end

@@ -1,35 +1,5 @@
-
-<h5 class="text-monospace"> If you are a cats fan and want to </h5>
-<%= link_to new_user_path, class: 'btn btn-link pull-right' do %>
-  <i class="glyphicon glyphicon-plus"></i> Join Us
-<% end %>
-<br>
-<br>
-
-<% if current_user.try(:admin?) %>
-<table class="table">
-  <thead>
-  <tr>
-    <th scope="col">Users</th>
-    <th scope="col">Male</th>
-    <th scope="col">Female</th>
-    <th scope="col">Average Age</th>
-    <th scope="col">Min Age</th>
-    <th scope="col">Max Age</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td><%= count.to_s %></td>
-    <td><%= male_users.to_s %></td>
-    <td><%= female_users.to_s %></td>
-    <td><%= average.round(2)  %></td>
-    <td><%= minimum.to_s %></td>
-    <td><%= maximum.to_s %></td>
-  </tr>
-  </tbody>
-</table>
-<% end %>
+  <%= render '/shared/side' %>
+  <br>
 
 <div class="container">
   <div class="row">
@@ -39,6 +9,7 @@
     <div class="card-body">
       <h5 class="card-title"><%= user.first_name + " " + user.last_name %></h5>
       <h6 class="card-subtitle mb-2 text-muted"><%= user.age.to_s + " years old." %></h6>
+      <p class="card-text"><%= user.address.city %></p>
       <p class="card-text"><%= user.about %></p>
       <a href="#" class="card-link"><%= link_to 'Show', user, class: 'btn btn-primary' %></a>
       <a href="#" class="card-link"><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-primary' %></a>

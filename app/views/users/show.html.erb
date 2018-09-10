@@ -1,8 +1,7 @@
 <p>
-  Hey,
+  Here you can see the pictures belonging to
   <strong><%= @user.first_name %></strong> :)
   <br>
-  We are happy to welcome you!
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %> |
@@ -11,16 +10,17 @@
 
 <br>
 <br>
+<% unless current_user.try(:admin?) %>
 <h3 class="text-center text-monospace">The random picture for you: </h3>
 <div class="row align-items-center" >
   <div class="col-md-12 d-flex justify-content-center mb-10px">
     <%= image_tag @url, height: '250', width: '300' %>
   </div>
 </div>
+  <% end %>
 
 <br>
 <hr>
-<h3 class="text-center text-monospace">All pictures you possess now: </h3>
 <br>
 <div class="container">
   <div class="row">

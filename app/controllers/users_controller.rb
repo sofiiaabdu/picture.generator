@@ -11,13 +11,21 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
+    if params[:first]
+      @users = first_name_sort(params[:first])
+      return
+    elsif params[:city]
+      @users = city_sort(params[:city])
+    end
     @users = User.all
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
-    random_picture_generator
+    unless current_user.try(:admin?)
+      random_picture_generator
+    end
 
     @pictures = Picture.pictures_by_user(params[:id])
   end
