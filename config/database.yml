@@ -83,6 +83,6 @@ test:
 #
 production:
   <<: *default
-  database: PictureApp_production
+  database: picture-generator
   username: PictureApp
   password: <%= ENV['PICTUREAPP_DATABASE_PASSWORD'] %>

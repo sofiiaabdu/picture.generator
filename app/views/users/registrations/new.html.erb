@@ -44,7 +44,7 @@
 
   <div class="form-group col-md-4">
     <%= f.label :address %>
-    <%= f.fields_for :address, @user.address do |address| %>
+    <%= f.fields_for :address do |address| %>
 
       <%= f.label :zip %>
       <%= address.text_field :zip, class: 'form-control', placeholder: 'Zip' %>

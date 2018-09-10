@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
                                                        :age,
                                                        :about,
                                                        :sex,
-                                                       adress_attributes: [ :city,
+                                                       address_attributes: [ :city,
                                                                             :street,
                                                                             :house_member,
                                                                             :zip
