@@ -10,6 +10,9 @@ class PicturesController < ApplicationController
   def index
     @pictures = @user.pictures.all
     @favourites = @user.favourites.build
+  end
+
+  def pictures
     @all_pictures = Picture.all
   end
 

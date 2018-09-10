@@ -72,3 +72,5 @@ gem 'autoprefixer-rails'
 gem 'bootstrap', '~> 4.1.3'
 
 gem 'jquery-rails'
+
+gem 'devise'

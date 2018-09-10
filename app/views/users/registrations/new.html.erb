@@ -1,0 +1,68 @@
+<h2>Sign up</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %>
+    <% if @minimum_password_length %>
+    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %><br />
+    <%= f.password_field :password, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, class: 'form-control', placeholder: 'First name' %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name, class: 'form-control', placeholder: 'Last name' %>
+  </div>
+  <div class="form-group col-md-4">
+    <%= f.label :sex %>
+    <%= f.select :sex, User.sexes.keys.map {|key| [t("sex.#{key}"), key]}, class: 'mdb-select colorful-select dropdown-primary'%>
+  </div>
+  <div class="form-group col-md-3">
+    <%= f.label :age %>
+    <%= f.text_field :age, class: 'form-control', placeholder: 'Age' %>
+  </div>
+  <div class="form-group col-md-6">
+    <%= f.label :about %>
+    <%= f.text_area :about, class: 'form-control', placeholder: 'About...' %>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.label :address %>
+    <%= f.fields_for :address, @user.address do |address| %>
+
+      <%= f.label :zip %>
+      <%= address.text_field :zip, class: 'form-control', placeholder: 'Zip' %>
+      <br>
+      <%= f.label :city %>
+      <%= address.text_field :city, class: 'form-control', placeholder: 'City' %>
+      <br>
+      <%= f.label :street %>
+      <%= address.text_field :street, class: 'form-control', placeholder: 'Street' %>
+      <br>
+      <%= f.label :house_member %>
+      <%= address.text_field :house_member, class: 'form-control', placeholder: 'Building' %>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Sign up" %>
+  </div>
+<% end %>
+
+ <%= render "users/shared/links" %>
