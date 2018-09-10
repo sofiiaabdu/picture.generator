@@ -3,10 +3,10 @@ require 'json'
 
 class UsersController < ApplicationController
   include UsersHelper
+  include UserAccess
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :authorize_admin, only: :index
-  before_action :user_access, only: :show
 
   # GET /users
   # GET /users.json
@@ -96,14 +96,6 @@ class UsersController < ApplicationController
     picture.save
   end
 
-=begin
-  def statistics
-    users = User.all
-    @female = users.female
-
-  end
-=end
-
     private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -121,12 +113,7 @@ class UsersController < ApplicationController
       redirect_to root_path, notice: 'Access denied!'
     end
 
-    def user_access
-      unless current_user.try(:admin?)
-        unless params[:id].to_i == current_user.id
-          # unless @user == current_user && current_user.admin?
-          redirect_to pictures_path
-        end
-      end
+    def user_id
+      params[:id]
     end
   end

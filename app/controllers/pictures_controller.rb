@@ -2,6 +2,8 @@ require 'json'
 require 'net/http'
 
 class PicturesController < ApplicationController
+  include UserAccess
+
   before_action :set_picture, only: [:show, :destroy]
   before_action :set_user, only: [:index]
 
@@ -32,5 +34,11 @@ class PicturesController < ApplicationController
 
   def set_user
     @user = User.find(params[:user_id])
+  end
+
+  private
+
+  def user_id
+    params[:user_id]
   end
 end

@@ -36,8 +36,7 @@ Favourite.create!(
 
 
 user = User.create!(
-    id: 101,
-    email: Faker::Internet.email,
+    email: 'admin@a.com',
     password: '111111',
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,

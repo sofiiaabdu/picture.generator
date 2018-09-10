@@ -5,6 +5,8 @@ class FavouritesController < ApplicationController
   before_action :set_favourite, only: [:show, :destroy]
   before_action :set_user
 
+  include UserAccess
+
   # GET /favourites
   # GET /favourites.json
   def index
@@ -41,16 +43,21 @@ class FavouritesController < ApplicationController
     @favorite = @user.favourites.find(params[:id])
     @favourite.destroy
     respond_to do |format|
-      format.html { redirect_to user_favourite_path, notice: 'Favourite was successfully destroyed.' }
+      format.html { redirect_to user_favourites_path, notice: 'Favourite was successfully destroyed.' }
     end
   end
 
   private
+
     def set_user
       @user = User.find(params[:user_id])
     end
 
   def set_favourite
     @favourite = Favourite.find(params[:id])
+  end
+
+  def user_id
+    params[:user_id]
   end
 end
