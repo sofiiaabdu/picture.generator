@@ -2,9 +2,11 @@ require 'net/http'
 require 'json'
 
 class UsersController < ApplicationController
+  include UsersHelper
+
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :authorize_admin, only: :index
-  before_action :user_access
+  before_action :user_access, only: :show
 
   # GET /users
   # GET /users.json
@@ -94,6 +96,14 @@ class UsersController < ApplicationController
     picture.save
   end
 
+=begin
+  def statistics
+    users = User.all
+    @female = users.female
+
+  end
+=end
+
     private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -106,18 +116,17 @@ class UsersController < ApplicationController
                                    address_attributes: [:zip, :city, :street, :house_member])
     end
 
-  def authorize_admin
-    return unless !current_user.admin?
-    redirect_to root_path, alert: 'Access denied!'
-  end
-
-  def user_access
-    # Check the params hash to see if the passed :id matches the current user's id
-    # (note the .to_i on params[:id], as you are comparing against a Fixnum)
-    # unless params[:id].to_i == current_user.id
-    unless @user == current_user
-      # This line redirects the user to the previous action
-      redirect_to pictures_path
+    def authorize_admin
+      return if current_user.try(:admin?)
+      redirect_to root_path, notice: 'Access denied!'
     end
-  end
+
+    def user_access
+      unless current_user.try(:admin?)
+        unless params[:id].to_i == current_user.id
+          # unless @user == current_user && current_user.admin?
+          redirect_to pictures_path
+        end
+      end
+    end
   end
