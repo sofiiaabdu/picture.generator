@@ -4,6 +4,16 @@
   <br>
 </p>
 
+<div class="card bg-light mb-3" style="max-width: 18rem;">
+  <div class="card-header"><%= @user.first_name + " " + @user.last_name %></div>
+  <div class="card-body">
+    <h5 class="card-title"><%= @user.sex %></h5>
+    <p class="card-text"><%= @user.age.to_s + " years old."%></p>
+    <p class="card-text"><%= "Lives in " + @user.address.city %></p>
+    <p class="card-text"><%=  @user.address.street + " " + @user.address.house_member %></p>
+  </div>
+</div>
+
 <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %> |
 <%= link_to 'Back', users_path, class: 'btn btn-success' %> |
 <%= link_to 'Favourites', user_favourites_path(params[:id]), class: 'btn btn-success' %>

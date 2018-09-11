@@ -11,12 +11,15 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-      @users = User.all
-      @users = @users.joins(:address).order("addresses.city #{params[:city]}") if params[:city]
-      @users = first_name_sort(params[:first]) if params[:first]
-      @users = age_select(params[:min], params[:max]) if params[:min]
-      @users = User.male if params[:male]
-      @users = User.female if params[:female]
+    @count = User.all.count
+    @count_male = User.male.count
+    @count_female = User.female.count
+    @count_other = User.other.count
+    @average = User.average(:age)
+    @minimum = User.minimum(:age)
+    @maximum = User.maximum(:age)
+
+    @users = filter(params[:first], params[:city], params[:min], params[:max], params[:male], params[:female])
   end
 
   # GET /users/1
@@ -103,13 +106,21 @@ class UsersController < ApplicationController
     picture.save
   end
 
+  def filter(first = nil, city = nil, min = nil, max = nil, male = nil, female = nil)
+    return User.order(first_name: :"#{first}") if first
+    return User.where('age <= ? and age >= ?', max, min) if min && max
+    return User.joins(:address).order("addresses.city #{city}") if city
+    return User.male if male
+    return User.female if female
+    return User.all
+  end
+
     private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_user
         @user = User.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:first_name, :last_name, :sex, :age, :about,
                                    address_attributes: [:zip, :city, :street, :house_member])
@@ -123,4 +134,4 @@ class UsersController < ApplicationController
     def user_id
       params[:id]
     end
-  end
+end
