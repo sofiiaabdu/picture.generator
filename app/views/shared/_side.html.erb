@@ -19,11 +19,34 @@
           <%= label_tag "City" %>
         </div>
         <div>
-          <%= select_tag(:city, options_for_select([ "asc", "desc" ], "desc")) %>
+          <%= select_tag(:city, options_for_select([ "ASC", "DESC" ])) %>
         </div>
         <div>
           <%= submit_tag "Save", :name => 'save' %>
         </div>
+      <% end %>
+    </div>
+    <div class="col">
+      <%= form_tag users_path, :method => :get do %>
+        <div>
+          <%= label_tag "Age" %>
+        </div>
+        <div>
+          <%= text_field_tag 'min' %>
+          <%= text_field_tag 'max' %>
+        </div>
+        <div>
+          <%= submit_tag "Save", :name => 'save' %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col">
+      <%= form_tag users_path, :method => :get do %>
+        <%= check_box_tag "male" %> male
+        <%= check_box_tag "female" %> female
+      <div>
+        <%= submit_tag "Save", :name => 'save' %>
+      </div>
       <% end %>
     </div>
 

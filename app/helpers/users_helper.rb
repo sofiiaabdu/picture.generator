@@ -33,7 +33,7 @@ module UsersHelper
   end
 
   def city_sort(order)
-    Address.all.order(city: :"#{order}")
+    User.order(city: "#{order}")
   end
 
   def age_select(min, max)

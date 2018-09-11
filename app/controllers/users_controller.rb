@@ -11,13 +11,12 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    if params[:first]
-      @users = first_name_sort(params[:first])
-      return
-    elsif params[:city]
-      @users = city_sort(params[:city])
-    end
-    @users = User.all
+      @users = User.all
+      @users = @users.joins(:address).order("addresses.city #{params[:city]}") if params[:city]
+      @users = first_name_sort(params[:first]) if params[:first]
+      @users = age_select(params[:min], params[:max]) if params[:min]
+      @users = User.male if params[:male]
+      @users = User.female if params[:female]
   end
 
   # GET /users/1
