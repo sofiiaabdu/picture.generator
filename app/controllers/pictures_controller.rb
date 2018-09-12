@@ -3,6 +3,7 @@ require 'net/http'
 
 class PicturesController < ApplicationController
   before_action :set_picture, only: [:show, :destroy]
+  before_action :authenticate_user!, except: :all_pictures
 
   # GET /pictures
   # GET /pictures.json
@@ -11,7 +12,7 @@ class PicturesController < ApplicationController
     @favourites = current_user.favourites.build
   end
 
-  def pictures
+  def all_pictures
     @all_pictures = Picture.all
   end
 
@@ -21,7 +22,7 @@ class PicturesController < ApplicationController
   def destroy
     @picture.destroy
     respond_to do |format|
-      format.html { redirect_to user_url(current_user.id) }
+      format.html { redirect_to user_path(current_user.id) }
     end
   end
 

@@ -15,7 +15,7 @@
 </div>
 
 <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %> |
-<%= link_to 'Back', users_path, class: 'btn btn-success' %> |
+<%= link_to 'Back', root_path, class: 'btn btn-success' %> |
 <%= link_to 'Favourites', favourites_path, class: 'btn btn-success' %>
 
 <br>
@@ -37,7 +37,7 @@
         <div class="card border-secondary my-2 mx-1" >
       <%= image_tag img.url, class: 'card-img-top' %>
           <div class="card-body text-center">
-      <%= link_to 'Destroy', user_picture_path(params[:id], img.id),
+      <%= link_to 'Destroy', picture_path(img.id),
                   method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
       <%= link_to 'Favourite', favourites_path(:picture_id => img.id), :method => :post %>
           </div>

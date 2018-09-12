@@ -10,7 +10,7 @@
           <%= image_tag img.url, class: 'card-img-top' %>
           <div class="card-body text-center">
             <%= link_to 'Destroy',
-                        user_picture_path(user_id: current_user.id, id: img.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+                        picture_path(user_id: current_user.id, id: img.id), method: :delete, data: { confirm: 'Are you sure?' } %>
           </div>
           <br> <br>
         </div>

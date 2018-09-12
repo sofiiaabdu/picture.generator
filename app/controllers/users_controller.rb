@@ -5,7 +5,6 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, only: [:show, :edit, :update, :destroy, :new]
   before_action :admin_authorize, only: [:index]
-  # before_action :user_authorize
 
   # GET /users
   # GET /users.json
@@ -84,12 +83,19 @@ class UsersController < ApplicationController
     private
 
     def filter(first = nil, city = nil, min = nil, max = nil, male = nil, female = nil)
-      return User.name_order(first) if first
-      return User.age_filter(max, min) if min && max
-      return User.city_order(city) if city
-      return User.male if male
-      return User.female if female
-      return User.all
+      if first
+        User.name_order(first)
+      elsif min && max
+        User.age_filter(max, min)
+      elsif city
+        User.city_order(city)
+      elsif male
+        User.male
+      elsif female
+        User.female
+      else
+        User.all
+      end
     end
 
     def random_picture_url
@@ -130,10 +136,5 @@ class UsersController < ApplicationController
     def admin_authorize
       return if current_user.try(:admin?)
       redirect_to pictures_path, alert: 'Access denied!'
-    end
-
-    def user_authorize
-      return if current_user.id.to_s == params[:id]
-      redirect_to current_user, alert: 'Access denied!'
     end
 end
