@@ -37,7 +37,7 @@
         <div class="card border-secondary my-2 mx-1" >
       <%= image_tag img.url, class: 'card-img-top' %>
           <div class="card-body text-center">
-      <%= link_to 'Delete', picture_path(img.id),
+      <%= link_to 'Delete', picture_url(:picture_id => img.id),
                   method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
             <% if current_user.id.to_s == params[:id]  %>
       <%= link_to 'Favourite', favourites_path(:picture_id => img.id), :method => :post %>

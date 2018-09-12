@@ -1,6 +1,3 @@
-require 'net/http'
-require 'json'
-
 class FavouritesController < ApplicationController
   before_action :set_favourite, only: [:show, :destroy]
   before_action :authenticate_user!

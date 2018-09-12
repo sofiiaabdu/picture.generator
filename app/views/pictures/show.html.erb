@@ -1,9 +1,16 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Picture:</strong>
-  <%= image_tag @picture.url %>
-</p>
-
-<%= link_to 'Edit', edit_picture_path(@picture) %> |
-<%= link_to 'Back', pictures_path %>
+<div class="container">
+  <div class="row">
+    <% @pictures.each do |img| %>
+      <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 mb-0">
+        <div class="card border-secondary my-2 mx-1" >
+          <%= image_tag img.url, class: 'card-img-top' %>
+          <div class="card-body text-center">
+            <%= link_to 'Delete',
+                        picture_path(user_id: current_user.id, id: img.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+          </div>
+          <br> <br>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
