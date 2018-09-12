@@ -23,4 +23,16 @@ class User < ApplicationRecord
   scope :female, -> { where(sex: 1) }
   scope :male, -> { where(sex: 0)}
   scope :other, -> { where(sex: 2)}
+
+  def self.name_order(param)
+    self.order(first_name: :"#{param}")
+  end
+
+  def self.city_order(param)
+    self.joins(:address).order("addresses.city #{param}")
+  end
+
+  def self.age_filter(param1, param2)
+    self.where('age <= ? and age >= ?', param1, param2)
+  end
 end

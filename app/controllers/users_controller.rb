@@ -84,9 +84,9 @@ class UsersController < ApplicationController
     private
 
     def filter(first = nil, city = nil, min = nil, max = nil, male = nil, female = nil)
-      return User.order(first_name: :"#{first}") if first
-      return User.where('age <= ? and age >= ?', max, min) if min && max
-      return User.joins(:address).order("addresses.city #{city}") if city
+      return User.name_order(first) if first
+      return User.age_filter(max, min) if min && max
+      return User.city_order(city) if city
       return User.male if male
       return User.female if female
       return User.all
