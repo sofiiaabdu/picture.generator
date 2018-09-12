@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'ffaker'
 
 class UsersController < ApplicationController
   before_action :authenticate_user!
@@ -23,7 +24,9 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    random_picture_generator
+    if current_user.id.to_s == params[:id]
+      random_picture_generator
+    end
 
     @pictures = Picture.pictures_by_user(params[:id])
   end
@@ -99,9 +102,9 @@ class UsersController < ApplicationController
     end
 
     def random_picture_url
-      url = Faker::LoremFlickr.image
+      url = FFaker::Avatar.image
       uri = URI.parse(url)
-      url_faker = url.slice('http://loremflickr.com')
+      # url_faker = url.slice('http://loremflickr.com')
 
       response = Net::HTTP.get_response(uri)
 
@@ -110,7 +113,7 @@ class UsersController < ApplicationController
         url = response.header['location']
       end
 
-      url_faker + URI.parse(url).to_s
+     URI.parse(url).to_s
     end
 
     def random_picture_generator
