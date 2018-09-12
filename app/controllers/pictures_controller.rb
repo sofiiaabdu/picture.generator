@@ -2,16 +2,13 @@ require 'json'
 require 'net/http'
 
 class PicturesController < ApplicationController
-  include UserAccess
-
   before_action :set_picture, only: [:show, :destroy]
-  before_action :set_user, only: [:index]
 
   # GET /pictures
   # GET /pictures.json
   def index
-    @pictures = @user.pictures.all
-    @favourites = @user.favourites.build
+    @pictures = current_user.pictures.all
+    @favourites = current_user.favourites.build
   end
 
   def pictures
@@ -24,21 +21,13 @@ class PicturesController < ApplicationController
   def destroy
     @picture.destroy
     respond_to do |format|
-      format.html { redirect_to user_url(params[:user_id]) }
+      format.html { redirect_to user_url(current_user.id) }
     end
-  end
-
-  def set_picture
-    @picture = Picture.find(params[:id])
-  end
-
-  def set_user
-    @user = User.find(params[:user_id])
   end
 
   private
 
-  def user_id
-    params[:user_id]
+  def set_picture
+    @picture = Picture.find(params[:id])
   end
 end

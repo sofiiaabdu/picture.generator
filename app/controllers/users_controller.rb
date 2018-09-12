@@ -2,11 +2,9 @@ require 'net/http'
 require 'json'
 
 class UsersController < ApplicationController
-  include UsersHelper
-  include UserAccess
-
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_admin, only: :index
+  before_action :authenticate_user!
+  before_action :admin_authorize, only: :index
+  before_action :user_authorize
 
   # GET /users
   # GET /users.json
@@ -25,17 +23,15 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    unless current_user.try(:admin?)
-      random_picture_generator
-    end
+    random_picture_generator
 
-    @pictures = Picture.pictures_by_user(params[:id])
+    @pictures = Picture.pictures_by_user(current_user.id)
   end
 
   # GET /users/new
   def new
-    @user = User.new
-    @user.address = Address.new
+    current_user = User.new
+    current_user.address = Address.new
     @picture = Picture.new
   end
 
@@ -46,15 +42,15 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
+    current_user = User.new(user_params)
 
     respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'Thanks for joining us! :)' }
-        format.json { render :show, status: :created, location: @user }
+      if current_user.save
+        format.html { redirect_to current_user, notice: 'Thanks for joining us! :)' }
+        format.json { render :show, status: :created, location: current_user }
       else
         format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: current_user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -63,12 +59,12 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
+      if current_user.update(user_params)
+        format.html { redirect_to current_user, notice: 'User was successfully updated.' }
+        format.json { render :show, status: :ok, location: current_user }
       else
         format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: current_user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -76,46 +72,46 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.address.destroy
-    @user.destroy
+    current_user.address.destroy
+    current_user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'Aww.. we are sad you\'ve left us' }
       format.json { head :no_content }
     end
   end
 
-  def random_picture_url
-    url = Faker::LoremFlickr.image
-    uri = URI.parse(url)
-    url_faker = url.slice('http://loremflickr.com')
+    private
 
-    response = Net::HTTP.get_response(uri)
-
-    if response.code == '301'
-      response = Net::HTTP.get_response(URI.parse(response.header['location']))
-      url = response.header['location']
+    def filter(first = nil, city = nil, min = nil, max = nil, male = nil, female = nil)
+      return User.order(first_name: :"#{first}") if first
+      return User.where('age <= ? and age >= ?', max, min) if min && max
+      return User.joins(:address).order("addresses.city #{city}") if city
+      return User.male if male
+      return User.female if female
+      return User.all
     end
 
-    url_faker + URI.parse(url).to_s
-  end
+    def random_picture_url
+      url = Faker::LoremFlickr.image
+      uri = URI.parse(url)
+      url_faker = url.slice('http://loremflickr.com')
 
-  def random_picture_generator
-    @url = random_picture_url
+      response = Net::HTTP.get_response(uri)
 
-    picture = Picture.new(url: @url, user_id: params[:id])
-    picture.save
-  end
+      if response.code == '301'
+        response = Net::HTTP.get_response(URI.parse(response.header['location']))
+        url = response.header['location']
+      end
 
-  def filter(first = nil, city = nil, min = nil, max = nil, male = nil, female = nil)
-    return User.order(first_name: :"#{first}") if first
-    return User.where('age <= ? and age >= ?', max, min) if min && max
-    return User.joins(:address).order("addresses.city #{city}") if city
-    return User.male if male
-    return User.female if female
-    return User.all
-  end
+      url_faker + URI.parse(url).to_s
+    end
 
-    private
+    def random_picture_generator
+      @url = random_picture_url
+
+      picture = Picture.new(url: @url, user_id: params[:id])
+      picture.save
+    end
 
     def set_user
         @user = User.find(params[:id])
@@ -126,12 +122,13 @@ class UsersController < ApplicationController
                                    address_attributes: [:zip, :city, :street, :house_member])
     end
 
-    def authorize_admin
-      return if current_user.try(:admin?)
-      redirect_to root_path, notice: 'Access denied!'
+    def admin_authorize
+      return if current_user.try(admin?)
+      redirect_to pictures_path, alert: 'Access denied!'
     end
 
-    def user_id
-      params[:id]
+    def user_authorize
+      return if current_user.id.to_s == params[:id]
+      redirect_to current_user, alert: 'Access denied!'
     end
 end

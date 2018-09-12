@@ -8,6 +8,14 @@
       <li class="nav-item active px-2">
         <%= link_to 'Home', pictures_path %>
       </li>
+      <% if current_user %>
+      <li class="nav-item active px-2">
+        <%= link_to 'Profile', user_path(current_user.id) %>
+      </li>
+      <li class="nav-item active px-2">
+        <%= link_to 'Pictures', user_pictures_path(current_user.id) %>
+      </li>
+      <% end %>
       <% if current_user.try(:admin?) %>
       <li class="nav-item px-2">
         <%= link_to 'Users', users_path %>

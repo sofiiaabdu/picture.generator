@@ -1,33 +1,31 @@
 <p>
   Here you can see the pictures belonging to
-  <strong><%= @user.first_name %></strong> :)
+  <strong><%= current_user.first_name %></strong> :)
   <br>
 </p>
 
 <div class="card bg-light mb-3" style="max-width: 18rem;">
-  <div class="card-header"><%= @user.first_name + " " + @user.last_name %></div>
+  <div class="card-header"><%= current_user.first_name + " " + current_user.last_name %></div>
   <div class="card-body">
-    <h5 class="card-title"><%= @user.sex %></h5>
-    <p class="card-text"><%= @user.age.to_s + " years old."%></p>
-    <p class="card-text"><%= "Lives in " + @user.address.city %></p>
-    <p class="card-text"><%=  @user.address.street + " " + @user.address.house_member %></p>
+    <h5 class="card-title"><%= current_user.sex %></h5>
+    <p class="card-text"><%= current_user.age.to_s + " years old."%></p>
+    <p class="card-text"><%= "Lives in " + current_user.address.city %></p>
+    <p class="card-text"><%=  current_user.address.street + " " + current_user.address.house_member %></p>
   </div>
 </div>
 
-<%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %> |
+<%= link_to 'Edit', edit_user_path(current_user), class: 'btn btn-success' %> |
 <%= link_to 'Back', users_path, class: 'btn btn-success' %> |
-<%= link_to 'Favourites', user_favourites_path(params[:id]), class: 'btn btn-success' %>
+<%= link_to 'Favourites', favourites_path, class: 'btn btn-success' %>
 
 <br>
 <br>
-<% unless current_user.try(:admin?) %>
 <h3 class="text-center text-monospace">The random picture for you: </h3>
 <div class="row align-items-center" >
   <div class="col-md-12 d-flex justify-content-center mb-10px">
     <%= image_tag @url, height: '250', width: '300' %>
   </div>
 </div>
-  <% end %>
 
 <br>
 <hr>
@@ -41,7 +39,7 @@
           <div class="card-body text-center">
       <%= link_to 'Destroy', user_picture_path(params[:id], img.id),
                   method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
-      <%= link_to 'Favourite', user_favourites_path(:user_id => params[:id], :picture_id => img.id), :method => :post %>
+      <%= link_to 'Favourite', favourites_path(:picture_id => img.id), :method => :post %>
           </div>
           <br> <br>
           </div>
