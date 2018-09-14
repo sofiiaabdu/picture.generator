@@ -13,5 +13,6 @@ class Address < ApplicationRecord
   validates :house_member, numericality: { less_than: 5000,
                              too_long: "Too big number"}
 
+  scope :city, -> (name) { where city: name }
 end
 

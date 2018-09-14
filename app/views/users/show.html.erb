@@ -1,26 +1,34 @@
-<p>
-  Hey,
-  <strong><%= @user.first_name %></strong> :)
-  <br>
-  We are happy to welcome you!
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %> |
-<%= link_to 'Back', users_path, class: 'btn btn-success' %> |
-<%= link_to 'Favourites', user_favourites_path(params[:id]), class: 'btn btn-success' %>
-
+<div class="row">
+  <div class="col">
+    <%= link_to 'Back', root_path, class: 'btn btn-success' %> |
+    <%= link_to 'Favourites', favourites_path, class: 'btn btn-success' %>
+  </div>
+</div>
 <br>
-<br>
-<h3 class="text-center text-monospace">The random picture for you: </h3>
-<div class="row align-items-center" >
-  <div class="col-md-12 d-flex justify-content-center mb-10px">
-    <%= image_tag @url, height: '250', width: '300' %>
+<div class="row">
+<div class="col-3 ">
+  <div class="card bg-light mb-3" style="max-width: 18rem;">
+    <div class="card-header"><%= "ID: " + @user.id.to_s %></div>
+    <div class="card-body">
+      <h5 class="card-title"><%= @user.first_name + " " + @user.last_name %></h5>
+      <hr>
+      <p class="card-text"><%= @user.age.to_s + " years old, " + @user.sex.to_s %></p>
+      <p class="card-text"><%= @user.address.city + ", " + @user.address.street + ", " + @user.address.house_member %></p>
+    </div>
   </div>
 </div>
 
+  <% if current_user.id.to_s == params[:id]  %>
+  <div class="col-6  d-flex justify-content-center mb-10px align-self-center">
+    <%= image_tag @url, height: '250', width: '300' %>
+  </div>
+    <% end %>
+</div>
+
+<%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-success' %>
+
 <br>
 <hr>
-<h3 class="text-center text-monospace">All pictures you possess now: </h3>
 <br>
 <div class="container">
   <div class="row">
@@ -29,9 +37,11 @@
         <div class="card border-secondary my-2 mx-1" >
       <%= image_tag img.url, class: 'card-img-top' %>
           <div class="card-body text-center">
-      <%= link_to 'Destroy', user_picture_path(params[:id], img.id),
+      <%= link_to 'Delete', picture_url(:picture_id => img.id),
                   method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
-      <%= link_to 'Favourite', user_favourites_path(:user_id => params[:id], :picture_id => img.id), :method => :post %>
+            <% if current_user.id.to_s == params[:id]  %>
+      <%= link_to 'Favourite', favourites_path(:picture_id => img.id), :method => :post %>
+              <% end %>
           </div>
           <br> <br>
           </div>

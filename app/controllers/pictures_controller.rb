@@ -2,35 +2,27 @@ require 'json'
 require 'net/http'
 
 class PicturesController < ApplicationController
-  before_action :set_picture, only: [:show, :destroy]
-  before_action :set_user, only: [:index]
+  before_action :authenticate_user!, except: :index
 
   # GET /pictures
   # GET /pictures.json
   def index
-    @pictures = @user.pictures.all
-    @favourites = @user.favourites.build
-  end
-
-  def pictures
-    @all_pictures = Picture.all
+    @all_pictures = if params[:filter] == 'user' && current_user
+        current_user.pictures
+      else
+        Picture.all
+      end
   end
 
   def show
   end
 
   def destroy
-    @picture.destroy
+    # @picture = Picture.find(params[:picture_id])
+    picture =  Picture.find_by(id: params[:picture_id], user_id: current_user.id)
+    picture.destroy
     respond_to do |format|
-      format.html { redirect_to user_url(params[:user_id]) }
+      format.html { redirect_to user_path(current_user.id) }
     end
-  end
-
-  def set_picture
-    @picture = Picture.find(params[:id])
-  end
-
-  def set_user
-    @user = User.find(params[:user_id])
   end
 end

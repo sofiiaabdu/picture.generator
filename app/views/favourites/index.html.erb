@@ -3,7 +3,7 @@
 <h3 class="text-center">Favourite Pictures</h3>
 
 <br>
-<%= link_to 'Back', user_path(params[:user_id]), class: 'btn btn-success' %>
+<%= link_to 'Back', current_user, class: 'btn btn-success' %>
 
 <br>
 
@@ -14,7 +14,7 @@
         <div class="card border-secondary my-2 mx-1" >
           <%= image_tag Picture.find(favourite.picture_id).url, class: 'card-img-top' %>
           <div class="card-body text-center">
-            <%= link_to 'Destroy', user_favourite_path(favourite.picture_id), method: :delete, data: { confirm: 'Are you sure?' } %>
+            <%= link_to 'Destroy', favourite_path(favourite), method: :delete, data: { confirm: 'Are you sure?' } %>
            </div>
           <br> <br>
         </div>

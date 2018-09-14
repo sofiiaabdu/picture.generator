@@ -1,19 +1,32 @@
 require 'net/http'
 require 'json'
+require 'ffaker'
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :new]
+  before_action :admin_authorize, only: [:index]
 
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @count = User.all.count
+    @count_male = User.male.count
+    @count_female = User.female.count
+    @count_other = User.other.count
+    @average = User.average(:age)
+    @minimum = User.minimum(:age)
+    @maximum = User.maximum(:age)
+
+    @users = filter(params[:first], params[:city], params[:min], params[:max], params[:male], params[:female])
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
-    random_picture_generator
+    if current_user.id.to_s == params[:id]
+      random_picture_generator
+    end
 
     @pictures = Picture.pictures_by_user(params[:id])
   end
@@ -70,43 +83,61 @@ class UsersController < ApplicationController
     end
   end
 
-  def random_picture_url
-    url = Faker::LoremFlickr.image
-    uri = URI.parse(url)
-    url_faker = url.slice('http://loremflickr.com')
-
-    response = Net::HTTP.get_response(uri)
-
-    if response.code == '301'
-      response = Net::HTTP.get_response(URI.parse(response.header['location']))
-      url = response.header['location']
-    end
-
-    url_faker + URI.parse(url).to_s
-  end
-
-  def random_picture_generator
-    @url = random_picture_url
-
-    picture = Picture.new(url: @url, user_id: params[:id])
-    picture.save
-  end
-
     private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-=begin
-      if params[:id] = 'sign_out'
-        sign_out current_user
-        redirect_to '/pictures'
+
+    def filter(first = nil, city = nil, min = nil, max = nil, male = nil, female = nil)
+      if first
+        User.name_order(first)
+      elsif min && max
+        User.age_filter(max, min)
+      elsif city
+        User.city_order(city)
+      elsif male
+        User.male
+      elsif female
+        User.female
       else
-=end
-        @user = User.find(params[:id])
+        User.all
+      end
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    def random_picture_url
+      url = FFaker::Avatar.image
+      uri = URI.parse(url)
+      # url_faker = url.slice('http://loremflickr.com')
+
+      response = Net::HTTP.get_response(uri)
+
+      if response.code == '301'
+        response = Net::HTTP.get_response(URI.parse(response.header['location']))
+        url = response.header['location']
+      end
+
+     URI.parse(url).to_s
+    end
+
+    def random_picture_generator
+      @url = random_picture_url
+
+      picture = Picture.new(url: @url, user_id: params[:id])
+      picture.save
+    end
+
+    def set_user
+      if current_user.admin?
+        @user = User.find(params[:id])
+      else
+        @user = current_user
+      end
+    end
+
     def user_params
       params.require(:user).permit(:first_name, :last_name, :sex, :age, :about,
                                    address_attributes: [:zip, :city, :street, :house_member])
+    end
+
+    def admin_authorize
+      return if current_user.try(:admin?)
+      redirect_to pictures_path, alert: 'Access denied!'
     end
 end
