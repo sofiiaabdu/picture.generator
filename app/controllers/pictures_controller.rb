@@ -18,7 +18,6 @@ class PicturesController < ApplicationController
   end
 
   def destroy
-    # @picture = Picture.find(params[:picture_id])
     picture =  Picture.find_by(id: params[:picture_id], user_id: current_user.id)
     picture.destroy
     respond_to do |format|

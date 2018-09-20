@@ -18,7 +18,6 @@ class FavouritesController < ApplicationController
   def create
     picture = current_user.pictures.find_by(id: params[:picture_id])
 
-
     @favourite = current_user.favourites.new(picture_id: picture.try(:id))
 
     respond_to do |format|

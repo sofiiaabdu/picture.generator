@@ -4,6 +4,7 @@ describe "Favourites", :type => :request do
   let(:password) {"123456"}
   let!(:bob) {create(:user)}
   let!(:picture) { create(:picture, user_id: bob.id) }
+  let(:favourite) {create(:favourite, user_id: bob.id, picture_id: picture.id)}
 
   before do
     post "/users/sign_in", params: {user: {email: bob.email, password: password}}
@@ -11,12 +12,11 @@ describe "Favourites", :type => :request do
 
    describe "#index" do
      before do
-       post "/users/sign_in", params:{bob: {email: "ad@admin.com", password: "123456"}}
        get favourites_path
      end
 
      it "succeeds" do
-       expect(response.status).to eq(200)
+       expect(response).to be_ok
      end
    end
 
@@ -27,6 +27,26 @@ describe "Favourites", :type => :request do
 
     it "succeeds" do
      expect { post_request }.to change{ Favourite.where(user_id: bob.id, picture_id: picture.id).count }.from(0).to(1)
+    end
+  end
+
+  describe "#destroy" do
+    let(:delete_request) do
+      delete "/favourites/#{favourite.id}"
+    end
+
+    it "succeeds" do
+      expect{ delete_request }.to change{ Favourite.where(id: favourite.id).count }.from(1).to(0)
+    end
+  end
+
+  describe "#new" do
+    before do
+      get "/favourites/new"
+    end
+
+    it "succeeds" do
+      expect(response.status).to eq(302)
     end
   end
 end
