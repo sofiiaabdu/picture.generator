@@ -17,10 +17,12 @@ class User < ApplicationRecord
                                   too_long: "%{count} characters is the maximum allowed"}
 
   validates :about, length: { maximum: 300,
-                              too_long: "%{count} characters is the maximum allowed"}
+                              too_long: "%{count} characters is the maximum allowed"},
+            allow_blank: true
 
   validates :age, numericality: { only_integer: true, greater_than: 0, less_than: 120,
-                                  message: "%{value} seems wrong, it must be less than 120" }
+                                  message: "%{value} seems wrong, it must be less than 120" },
+            allow_blank: true
 
   scope :female, -> { where(sex: 1) }
   scope :male, -> { where(sex: 0)}

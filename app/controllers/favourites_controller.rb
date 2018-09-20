@@ -16,10 +16,10 @@ class FavouritesController < ApplicationController
   # POST /favourites
   # POST /favourites.json
   def create
-    @favourite = current_user.favourites.new(
-                                      user_id: params[:user_id],
-                                      picture_id: params[:picture_id]
-                                      )
+    picture = current_user.pictures.find_by(id: params[:picture_id])
+
+
+    @favourite = current_user.favourites.new(picture_id: picture.try(:id))
 
     respond_to do |format|
       if @favourite.save

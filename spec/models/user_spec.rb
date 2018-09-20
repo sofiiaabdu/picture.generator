@@ -42,8 +42,50 @@ describe User do
   end
 
   describe "validation" do
-    it "when first name is blank" do
-      expect(build(:user, first_name: "")).to be_valid
+    context "when first name" do
+      it "is blank" do
+        expect(build(:user, first_name: "")).not_to be_valid
+      end
+
+      it "is out of range" do
+        expect(build(:user, first_name: 'a'*101)).not_to be_valid
+      end
+    end
+
+    context "when last name" do
+      it "is blank" do
+        expect(build(:user, last_name: "")).not_to be_valid
+      end
+
+      it "is out of range" do
+        expect(build(:user, last_name: 'a'*101)).not_to be_valid
+      end
+    end
+
+    context "when about field" do
+      it "is out of range" do
+        expect(build(:user, about: 'a'*301)).not_to be_valid
+      end
+
+      it "is blank" do
+        expect(build(:user, about: "")).to be_valid
+      end
+    end
+
+    context "when age" do
+      it "is blank" do
+        expect(build(:user, age: "")).to be_valid
+      end
+
+      it "is greater then 120" do
+        expect(build(:user, age: 121)).not_to be_valid
+      end
+    end
+
+    context "when sex" do
+      it "is not in range" do
+        expect(build(:user, sex: 2)).to be_valid
+      end
     end
   end
 end

@@ -81,3 +81,5 @@ gem 'ffaker'
 gem 'factory_bot'
 
 gem 'rspec-rails'
+
+gem 'rails-controller-testing'
