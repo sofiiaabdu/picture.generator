@@ -39,14 +39,4 @@ describe "Favourites", :type => :request do
       expect{ delete_request }.to change{ Favourite.where(id: favourite.id).count }.from(1).to(0)
     end
   end
-
-  describe "#new" do
-    before do
-      get "/favourites/new"
-    end
-
-    it "succeeds" do
-      expect(response.status).to eq(302)
-    end
-  end
 end

@@ -14,11 +14,8 @@ class PicturesController < ApplicationController
       end
   end
 
-  def show
-  end
-
   def destroy
-    picture =  Picture.find_by(id: params[:picture_id], user_id: current_user.id)
+    picture =  Picture.find_by(id: params[:id], user_id: current_user.id)
     picture.destroy
     respond_to do |format|
       format.html { redirect_to user_path(current_user.id) }
