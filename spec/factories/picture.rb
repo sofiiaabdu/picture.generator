@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :picture do
-    url {"https://robohash.org/nostrumsuntaut.png?size=300x300"}
+    url {FFaker::Avatar.image}
+    user_id {1}
   end
 end

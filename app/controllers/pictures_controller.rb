@@ -7,11 +7,18 @@ class PicturesController < ApplicationController
   # GET /pictures
   # GET /pictures.json
   def index
+=begin
     @all_pictures = if params[:filter] == 'user' && current_user
         current_user.pictures
       else
         Picture.all
       end
+=end
+    if current_user
+      @all_pictures = current_user.pictures
+    else
+      @all_pictures = Picture.all
+    end
   end
 
   def destroy
