@@ -72,7 +72,7 @@ gem 'haml-rails', '~> 1.0'
 
 gem 'autoprefixer-rails'
 
-gem 'bootstrap', '~> 4.1.3'
+gem 'bootstrap', '~> 4.3.1'
 
 gem 'jquery-rails'
 
